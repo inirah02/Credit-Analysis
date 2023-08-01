@@ -1,0 +1,122 @@
+
+
+```{r}
+# Import the readr package
+library(readr)
+# Basic syntax
+data <- read.csv("credit.csv", header = TRUE, sep = ",")
+head(data)
+
+# Print the column names
+print(colnames(data))
+
+# Number of rows in the dataframe
+num_rows <- nrow(data)
+# Columns with numeric data
+
+numeric_columns <- names(data)[sapply(data, is.numeric)]
+
+# Create a vector to store the number of different strings in each column
+num_different_strings <- vector(length = ncol(data))
+
+# Iterate over the columns
+for (i in 1:ncol(data)) {
+  # Check if the column contains string data
+  if (is.character(data[[i]]) & !is.numeric(data[[i]])) {
+    # Count the number of different strings in the column
+    num_different_strings[i] <- length(unique(data[[i]]))
+  }
+}
+
+# Print the columns with string data and the number of different strings in each column
+colnames(data)[num_different_strings > 0]
+
+#Print how many different strings are found in each column:
+num_different_strings[num_different_strings > 0]
+
+# Columns with boolean data
+boolean_columns <- names(data)[sapply(data, is.logical)]
+
+# Missing values in each column
+missing_values_per_column <- colSums(is.na(data))
+
+# Total missing values in the dataframe
+total_missing_values <- sum(missing_values_per_column)
+num_rows
+numeric_columns
+
+boolean_columns
+missing_values_per_column
+total_missing_values
+```
+
+
+
+
+
+```{r}
+
+# Step 3: Calculate statistics
+statistics <- list()
+numeric_columns <- names(data)[sapply(data, is.numeric)]
+print(numeric_columns)
+for (column in (numeric_columns)) {
+  max_value <- max(data[[column]])
+  min_value <- min(data[[column]])
+  mean_value <- mean(data[[column]])
+  median_value <- median(data[[column]])
+  mode_value <- as.numeric(names(table(data[[column]])))[which.max(table(data[[column]]))]
+
+  statistics[[column]] <- list(
+    "Maximum" = max_value,
+    "Minimum" = min_value,
+    "Mean" = mean_value,
+    "Median" = median_value,
+    "Mode" = mode_value
+  )
+}
+
+print(statistics)
+```
+```{r}
+data <- read.csv("/Users/ananya/Desktop/R programming/credit.csv", header = TRUE, sep = ",", stringsAsFactors = TRUE)
+# Step 2: Quantiles (25%, 75%)
+q_25 <- quantile(data$amount, 0.25)
+q_75 <- quantile(data$amount, 0.75)
+cat("25% Quantile (Q1):", q_25, "\n")
+cat("75% Quantile (Q3):", q_75, "\n")
+
+# Step 3: Correlation Matrix
+correlation_matrix <- cor(data[, sapply(data, is.numeric)])
+print(correlation_matrix)
+
+# Step 1: Load the required library (if not already installed)
+ # Install the 'readr' package
+
+library(readr)             # Load the 'readr' package
+
+
+# Step 3: Perform Chi-squared test between two categorical variables 'Variable1' and 'Variable2'
+result_chi2 <- chisq.test(data$credit_history, data$default)
+
+
+# Step 4: Print the result
+print(result_chi2)
+
+
+
+```
+```{r}
+  # Install the 'rpart.plot' package
+library(rpart)              # Load the 'rpart' package
+library(rpart.plot)
+# Step 3: Create a decision tree model
+model_tree <- rpart(default ~ ., data = data)
+
+# Step 4: Plot the decision tree
+rpart.plot(model_tree)
+```
+
+
+
+
